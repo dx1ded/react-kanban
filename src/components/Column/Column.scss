@@ -1,0 +1,19 @@
+.column {
+  background-color: var(--dark);
+  width: max-content;
+  padding: 1.5rem;
+  flex-shrink: 0;
+  border-radius: 16px;
+
+  &__name {
+    font-size: 2rem;
+    color: var(--white);
+    margin-bottom: 1rem;
+  }
+
+  &__items {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+}

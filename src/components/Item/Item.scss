@@ -1,0 +1,43 @@
+.item {
+  padding: 1.2rem;
+  background-color: var(--mint);
+  color: var(--white);
+  max-width: 23rem;
+  border-radius: 8px;
+
+  &:nth-child(4n + 2) {
+    background-color: var(--purple);
+  }
+
+  &:nth-child(4n + 3) {
+    background-color: var(--pink);
+  }
+
+  &:nth-child(4n + 4) {
+    background-color: var(--red);
+  }
+
+  &__title {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  &__description {
+    font-size: 0.875rem;
+    line-height: 1.4;
+    margin-bottom: 1rem;
+  }
+
+  &__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  &__tag {
+    font-size: 0.75rem;
+    border: 1px solid currentColor;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+  }
+}

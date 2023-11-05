@@ -1,5 +1,5 @@
 import "./Column.scss"
-import { Item } from "../Item/Item"
+import { AddItem, Item } from "../Item/Item"
 
 export function Column() {
   return (
@@ -12,7 +12,14 @@ export function Column() {
         <Item />
         <Item />
         <Item />
+        <AddItem />
       </div>
     </div>
+  )
+}
+
+export function AddColumn() {
+  return (
+    <button type="button" className="add-column" aria-label="Add new column">+</button>
   )
 }

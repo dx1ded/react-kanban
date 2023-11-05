@@ -1,5 +1,5 @@
 import "./App.scss"
-import { Column } from "./components/Column/Column"
+import { AddColumn, Column } from "./components/Column/Column"
 
 export function App() {
   return (
@@ -11,6 +11,7 @@ export function App() {
         <Column />
         <Column />
         <Column />
+        <AddColumn />
       </div>
     </div>
   )

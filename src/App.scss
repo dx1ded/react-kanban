@@ -1,11 +1,9 @@
-.app {
-  padding: 3rem 5rem;
-}
-
 .container {
   display: flex;
   overflow-x: auto;
+  align-items: flex-start;
   position: absolute;
   gap: 1rem;
+  padding: 3rem 2rem;
 }
 

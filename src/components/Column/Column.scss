@@ -1,7 +1,7 @@
 .column {
   background-color: var(--dark);
   width: max-content;
-  padding: 1.5rem;
+  padding: 1.25rem;
   flex-shrink: 0;
   border-radius: 16px;
 
@@ -16,4 +16,16 @@
     flex-direction: column;
     gap: 1rem;
   }
+}
+
+.add-column {
+  display: block;
+  width: 15rem;
+  font-size: 1.25rem;
+  background-color: var(--dark);
+  color: var(--white);
+  border: none;
+  border-radius: 4px;
+  padding: 0.2rem;
+  cursor: pointer;
 }

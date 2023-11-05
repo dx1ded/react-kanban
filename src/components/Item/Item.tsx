@@ -17,3 +17,9 @@ export function Item() {
     </div>
   )
 }
+
+export function AddItem() {
+  return (
+    <button type="button" className="add-item" aria-label="Add new item">+</button>
+  )
+}

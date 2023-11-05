@@ -41,3 +41,14 @@
     border-radius: 4px;
   }
 }
+
+.add-item {
+  border: none;
+  display: block;
+  font-size: 1rem;
+  border-radius: 4px;
+  background-color: var(--mint);
+  color: var(--white);
+  padding: 0.25rem;
+  cursor: pointer;
+}

@@ -4,17 +4,17 @@ import { ItemType } from "../items/reducer"
 export interface ColumnType {
   id: string,
   name: string,
-  items: Pick<ItemType, "id">[]
+  items: ItemType["id"][]
 }
 
-type StateType = ColumnType[]
+export type StateType = ColumnType[]
 
 const initialState: StateType = []
 
 export const columnsReducer = (state = initialState, action: ColumnAction): StateType => {
   switch (action.type) {
     case "ADD_COLUMN":
-      return [...state, action.column]
+      return [...state, { ...action.column, items: [] }]
     case "EDIT_COLUMN_NAME":
       return state.map((column) => column.id === action.column.id
         ? { ...column, name: action.column.name }
@@ -22,6 +22,16 @@ export const columnsReducer = (state = initialState, action: ColumnAction): Stat
       )
     case "REMOVE_COLUMN":
       return state.filter(({ id }) => id !== action.id)
+    case "ADD_ITEM":
+      return state.map((column) => column.id === action.ids.column
+        ? { ...column, items: [...column.items, action.ids.item] }
+        : column
+      )
+    case "REMOVE_ITEM":
+      return state.map((column) => column.id === action.ids.column
+        ? { ...column, items: column.items.filter((id) => id !== action.ids.item) }
+        : column
+      )
     default: return state
   }
 }

@@ -7,15 +7,15 @@ export interface ItemType {
   tags: string[]
 }
 
-type StateType = ItemType[]
+export type StateType = ItemType[]
 
 const initialState: StateType = []
 
 export const itemsReducer = (state = initialState, action: ItemAction): StateType => {
   switch (action.type) {
     case "ADD_ITEM":
-      return [...state, action.item]
-    case "EDIT_ITEM_NAME":
+      return [...state, { ...action.item, tags: [] }]
+    case "EDIT_ITEM_TITLE":
       return state.map((item) => item.id === action.item.id
         ? { ...item, title: item.title }
         : item
@@ -25,8 +25,29 @@ export const itemsReducer = (state = initialState, action: ItemAction): StateTyp
         ? { ...item, description: item.description }
         : item
       )
-    case "REMOVE_ITEM":
-      return state.filter(({ id }) => id !== action.id)
+    case "REMOVE_ITEMS":
+      return state.filter(({ id }) => !action.ids.includes(id))
+    case "ADD_TAG":
+      return state.map((item) => item.id === action.tag.itemId
+        ? { ...item, tags: [...item.tags, action.tag.name] }
+        : item
+      )
+    case "EDIT_TAG":
+      return state.map((item) => item.id === action.tag.itemId
+        ? {
+          ...item,
+          tags: item.tags.map((tag, index) => index === action.tag.index
+            ? action.tag.name
+            : tag
+          )
+        }
+        : item
+      )
+    case "REMOVE_TAG":
+      return state.map((item) => item.id === action.tag.itemId
+        ? { ...item, tags: item.tags.filter((_, index) => index !== action.tag.index) }
+        : item
+      )
     default: return state
   }
 }

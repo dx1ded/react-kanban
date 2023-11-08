@@ -1,14 +1,40 @@
 .column {
   background-color: var(--dark);
-  width: max-content;
+  max-width: 25rem;
+  width: 100%;
   padding: 1.25rem;
   flex-shrink: 0;
   border-radius: 16px;
 
-  &__name {
-    font-size: 2rem;
-    color: var(--white);
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
     margin-bottom: 1rem;
+
+    &:hover .column__delete {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  &__delete {
+    color: red;
+    visibility: hidden;
+    opacity: 0;
+    cursor: pointer;
+    transition:
+      visibility 0.3s ease-in-out,
+      opacity 0.3s ease-in-out;
+    ;
+  }
+
+  &__name {
+    font-size: 1.5rem;
+    color: var(--white);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   &__items {
@@ -20,7 +46,9 @@
 
 .add-column {
   display: block;
-  width: 15rem;
+  max-width: 15rem;
+  flex-shrink: 0;
+  width: 100%;
   font-size: 1.25rem;
   background-color: var(--dark);
   color: var(--white);

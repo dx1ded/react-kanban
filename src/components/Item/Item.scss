@@ -5,9 +5,9 @@
   max-width: 23rem;
   border-radius: 8px;
 
-  &:not(:last-of-type) {
-    margin-bottom: 1rem;
-  }
+  //&:not(:last-of-type) {
+  //  margin-bottom: 1rem;
+  //}
 
   &:nth-of-type(4n + 2) {
     background-color: var(--purple);
@@ -87,7 +87,7 @@
   border: none;
   display: block;
   font-size: 1rem;
-  margin-top: 1rem;
+  //margin-top: 1rem;
   font-weight: 600;
   border-radius: 4px;
   background-color: cornflowerblue;

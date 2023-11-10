@@ -17,12 +17,12 @@ export const itemsReducer = (state = initialState, action: ItemAction): StateTyp
       return [...state, { ...action.item, tags: [] }]
     case "EDIT_ITEM_TITLE":
       return state.map((item) => item.id === action.item.id
-        ? { ...item, title: item.title }
+        ? { ...item, title: action.item.title }
         : item
       )
     case "EDIT_ITEM_DESCRIPTION":
       return state.map((item) => item.id === action.item.id
-        ? { ...item, description: item.description }
+        ? { ...item, description: action.item.description }
         : item
       )
     case "REMOVE_ITEMS":

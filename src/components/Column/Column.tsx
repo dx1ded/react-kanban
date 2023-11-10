@@ -45,9 +45,10 @@ export function Column({ column }: PropsType) {
           {column.name}</h2>
       </div>
       <div className="column__items">
-        {column.items.map((id) => (
+        {column.items.map((id, index) => (
           <Item
             key={id}
+            index={index}
             item={state.find((item) => item.id === id)!}
             columnId={column.id}
           />

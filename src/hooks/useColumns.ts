@@ -1,7 +1,7 @@
 import { useContext, useReducer } from "react"
 import { columnsReducer, StateType } from "../reducers/columns/reducer"
 import { KanbanContext } from "../context/kanbanContext"
-import { addColumn, editColumnName, removeColumn, addItem, removeItem } from "../reducers/columns/actions"
+import { addColumn, editColumnName, removeColumn, addItem, addItemAt, removeItem } from "../reducers/columns/actions"
 
 export function useColumnsContext(initialState: StateType = []) {
   const [state, dispatch] = useReducer(columnsReducer, initialState)
@@ -12,5 +12,5 @@ export function useColumnsContext(initialState: StateType = []) {
 export function useColumns() {
   const { columns: { state, dispatch } } = useContext(KanbanContext)
 
-  return { state, dispatch, addColumn, editColumnName, removeColumn, addItem, removeItem }
+  return { state, dispatch, addColumn, editColumnName, removeColumn, addItem, addItemAt, removeItem }
 }

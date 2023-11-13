@@ -1,6 +1,6 @@
 import { ItemType } from "./reducer"
 
-type IdAndTitleAndDescription = Omit<ItemType, "tags">
+type AddItem = Omit<ItemType, "tags">
 type EditItemTitle = Pick<ItemType, "id" | "title">
 type EditItemDescription = Pick<ItemType, "id" | "description">
 type RemoveItems = ItemType["id"][]
@@ -10,7 +10,7 @@ type EditTag = { itemId: ItemType["id"], index: number, name: string }
 type RemoveTag = { itemId: ItemType["id"], index: number }
 
 export type ItemAction =
-  | { type: "ADD_ITEM", item: IdAndTitleAndDescription }
+  | { type: "ADD_ITEM", item: AddItem }
   | { type: "EDIT_ITEM_TITLE", item: EditItemTitle }
   | { type: "EDIT_ITEM_DESCRIPTION", item: EditItemDescription }
   | { type: "REMOVE_ITEMS", ids: RemoveItems }
@@ -18,7 +18,7 @@ export type ItemAction =
   | { type: "EDIT_TAG", tag: EditTag }
   | { type: "REMOVE_TAG", tag: RemoveTag }
 
-export function addItem(item: IdAndTitleAndDescription): ItemAction {
+export function addItem(item: AddItem): ItemAction {
   return { type: "ADD_ITEM", item }
 }
 

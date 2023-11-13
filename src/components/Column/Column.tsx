@@ -1,9 +1,9 @@
 import { ChangeEvent } from "react"
-import { v4 as uuidv4 } from "uuid"
 import { ColumnType } from "../../reducers/columns/reducer"
 import { useColumns } from "../../hooks/useColumns"
 import { useItems } from "../../hooks/useItems"
-import { AddItem, Item } from "../Item/Item"
+import { Item } from "../Item/Item"
+import { AddItem } from "../Item/AddItem"
 import "./Column.scss"
 
 interface PropsType {
@@ -45,10 +45,9 @@ export function Column({ column }: PropsType) {
           {column.name}</h2>
       </div>
       <div className="column__items">
-        {column.items.map((id, index) => (
+        {column.items.map((id) => (
           <Item
             key={id}
-            index={index}
             item={state.find((item) => item.id === id)!}
             columnId={column.id}
           />
@@ -56,25 +55,5 @@ export function Column({ column }: PropsType) {
         <AddItem columnId={column.id} />
       </div>
     </div>
-  )
-}
-
-export function AddColumn() {
-  const { dispatch, addColumn } = useColumns()
-
-  const clickHandler = () => {
-    dispatch(addColumn({
-      id: uuidv4(),
-      name: "New column"
-    }))
-  }
-
-  return (
-    <button
-      type="button"
-      className="add-column"
-      aria-label="Add new column"
-      onClick={clickHandler}
-    >+</button>
   )
 }

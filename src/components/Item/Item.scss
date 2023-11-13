@@ -1,25 +1,12 @@
+.item-wrapper {
+  margin-bottom: 1rem;
+}
+
 .item {
   padding: 1.2rem;
-  background-color: var(--mint);
   color: var(--white);
   max-width: 23rem;
   border-radius: 8px;
-
-  //&:not(:last-of-type) {
-  //  margin-bottom: 1rem;
-  //}
-
-  &:nth-of-type(4n + 2) {
-    background-color: var(--purple);
-  }
-
-  &:nth-of-type(4n + 3) {
-    background-color: var(--pink);
-  }
-
-  &:nth-of-type(4n + 4) {
-    background-color: var(--red);
-  }
 
   &:hover .item__actions {
     visibility: visible;
@@ -78,20 +65,9 @@
 }
 
 .ghost-item {
+  display: block;
   background-color: gray;
   border-radius: 8px;
   max-width: 23rem;
-}
-
-.add-item {
-  border: none;
-  display: block;
-  font-size: 1rem;
-  //margin-top: 1rem;
-  font-weight: 600;
-  border-radius: 4px;
-  background-color: cornflowerblue;
-  color: var(--white);
-  padding: 0.25rem;
-  cursor: pointer;
+  margin-bottom: 1rem;
 }

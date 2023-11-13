@@ -1,5 +1,9 @@
-export const getEmptyImage = (): HTMLImageElement => {
-  const image = new Image()
-  image.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs="
-  return image
+export function* generateColors(): Generator<string> {
+  yield "#00B294"
+  yield "#7678D1"
+  yield "#C94AA8"
+  yield "#DA3A3A"
+  yield* generateColors()
 }
+
+export const HIDDEN_CLASSNAME = "visually-hidden"

@@ -23,8 +23,8 @@ export const KanbanContext = createContext<KanbanContextType>(kanban)
 export function KanbanProvider({ children }: { children?: ReactNode }) {
   return (
     <KanbanContext.Provider value={{
-      columns: useColumnsContext([]),
-      items: useItemsContext([])
+      columns: useColumnsContext(),
+      items: useItemsContext()
     }}>
       {children}
     </KanbanContext.Provider>

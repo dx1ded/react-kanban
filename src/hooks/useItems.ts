@@ -11,7 +11,7 @@ import {
   removeTag
 } from "../reducers/items/actions"
 
-export function useItemsContext(initialState: StateType) {
+export function useItemsContext(initialState: StateType = []) {
   const [state, dispatch] = useReducer(itemsReducer, initialState)
 
   return { state, dispatch }

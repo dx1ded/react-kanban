@@ -4,6 +4,7 @@ export interface ItemType {
   id: string,
   title: string,
   description: string,
+  color: string,
   tags: string[]
 }
 

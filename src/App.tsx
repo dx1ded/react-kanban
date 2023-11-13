@@ -1,5 +1,6 @@
 import { useColumns } from "./hooks/useColumns"
-import { AddColumn, Column } from "./components/Column/Column"
+import { Column } from "./components/Column/Column"
+import { AddColumn } from "./components/Column/AddColumn"
 import "./App.scss"
 
 export function App() {

@@ -27,18 +27,20 @@ export const columnsReducer = (state = initialState, action: ColumnAction): Stat
         ? { ...column, items: [...column.items, action.ids.item] }
         : column
       )
-    case "ADD_ITEM_AT":
-      return state.map((column) => column.id === action.data.ids.column
+    case "ADD_ITEM_BEFORE":
+      // debugger
+      return state.map((column) => column.id === action.ids.column
         ? {
             ...column,
-            items: column.items.map((id, index) => index === action.data.index
-              ? [action.data.ids.item, id]
+            items: column.items.map((id) => id === action.ids.beforeItem
+              ? [action.ids.item, id]
               : id
             ).flat()
           }
         : column
       )
     case "REMOVE_ITEM":
+      // debugger
       return state.map((column) => column.id === action.ids.column
         ? { ...column, items: column.items.filter((id) => id !== action.ids.item) }
         : column

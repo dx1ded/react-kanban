@@ -1,6 +1,6 @@
-import React, { createContext, ReactNode, useState } from "react"
-import { ItemType } from "../reducers/items/reducer"
+import React, { useState, createContext, ReactNode } from "react"
 import { ColumnType } from "../reducers/columns/reducer"
+import { ItemType } from "../reducers/items/reducer"
 
 interface DragType {
   columnId: ColumnType["id"],
@@ -26,7 +26,7 @@ const drag: DragContextType = {
 
 export const DragContext = createContext<DragContextType>(drag)
 
-export function DragProvider({ children }: { children: ReactNode }) {
+export function DragProvider({ children }: { children?: ReactNode }) {
   const [drag, setDrag] = useState<DragType>(defaultDrag)
 
   return (

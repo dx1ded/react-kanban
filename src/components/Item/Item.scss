@@ -69,5 +69,12 @@
   background-color: gray;
   border-radius: 8px;
   max-width: 23rem;
-  margin-bottom: 1rem;
+
+  &--prev {
+    margin-bottom: 1rem;
+  }
+
+  &--next {
+    margin-top: 1rem;
+  }
 }

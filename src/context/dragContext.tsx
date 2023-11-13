@@ -5,7 +5,7 @@ import { ItemType } from "../reducers/items/reducer"
 interface DragType {
   columnId: ColumnType["id"],
   itemId: ItemType["id"],
-  isDragging: boolean,
+  isDragging: boolean
 }
 
 const defaultDrag: DragType = {

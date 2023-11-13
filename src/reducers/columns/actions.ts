@@ -8,8 +8,9 @@ type ColumnAndItemIds = {
   item: ItemType["id"]
 }
 
-type AddItemBefore = ColumnAndItemIds & {
-  beforeItem: ItemType["id"]
+type AddItemAt = ColumnAndItemIds & {
+  refItem: ItemType["id"],
+  isBefore: boolean
 }
 
 export type ColumnAction =
@@ -17,7 +18,7 @@ export type ColumnAction =
   | { type: "EDIT_COLUMN_NAME", column: IdAndName }
   | { type: "REMOVE_COLUMN", id: RemoveColumn }
   | { type: "ADD_ITEM", ids: ColumnAndItemIds }
-  | { type: "ADD_ITEM_BEFORE", ids: AddItemBefore }
+  | { type: "ADD_ITEM_AT", ids: AddItemAt }
   | { type: "REMOVE_ITEM", ids: ColumnAndItemIds }
 
 export function addColumn(column: IdAndName): ColumnAction {
@@ -36,8 +37,8 @@ export function addItem(ids: ColumnAndItemIds): ColumnAction {
   return { type: "ADD_ITEM", ids }
 }
 
-export function addItemBefore(ids: AddItemBefore): ColumnAction {
-  return { type: "ADD_ITEM_BEFORE", ids }
+export function addItemAt(ids: AddItemAt): ColumnAction {
+  return { type: "ADD_ITEM_AT", ids }
 }
 
 export function removeItem(ids: ColumnAndItemIds): ColumnAction {

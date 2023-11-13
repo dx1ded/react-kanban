@@ -1,8 +1,9 @@
-import { useState, useRef, ChangeEvent, MouseEvent } from "react"
+import { useRef, ChangeEvent, MouseEvent } from "react"
 import { ColumnType } from "../../reducers/columns/reducer"
 import { ItemType } from "../../reducers/items/reducer"
 import { useColumns } from "../../hooks/useColumns"
 import { useItems } from "../../hooks/useItems"
+import { useGhost } from "../../hooks/useGhost"
 import { useDrag } from "../../hooks/useDrag"
 import { AddTag, Tag } from "../Tag/Tag"
 import { HIDDEN_CLASSNAME } from "../../utils"
@@ -13,27 +14,15 @@ interface PropsType {
   columnId: ColumnType["id"]
 }
 
-interface GhostItem {
-  state: "none" | "appearing" | "disappearing",
-  height: number,
-  // 0 - 100 (%)
-  heightRatio: number,
-  // In ms
-  delay: number
-}
-
 export function Item({ item, columnId }: PropsType) {
-  const { dispatch: columnsDispatch, addItemBefore, removeItem } = useColumns()
+  const { dispatch: columnsDispatch, addItemAt, removeItem } = useColumns()
   const { dispatch, removeItems, editItemTitle, editItemDescription } = useItems()
   const { drag, setDrag } = useDrag()
+  const prev = useGhost("ghost-item ghost-item--prev")
+  const next = useGhost("ghost-item ghost-item--next")
   const itemRef = useRef<HTMLDivElement | null>(null)
-  const intervalRef = useRef<number | null>(null)
-  const [ghost, setGhost] = useState<GhostItem>({
-    state: "none",
-    height: 0,
-    heightRatio: 0,
-    delay: 8
-  })
+  // Top | bottom of the element
+  const dragPosition = useRef<string | null>(null)
 
   const deleteItem = () => {
     dispatch(removeItems([item.id]))
@@ -61,53 +50,6 @@ export function Item({ item, columnId }: PropsType) {
     }))
   }
 
-  const forceGhostRemoval = () => {
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current)
-      intervalRef.current = null
-    }
-
-    setGhost((prevState) => ({ ...prevState, state: "none" }))
-  }
-
-  const toggleGhost = ({ state, height }: Pick<GhostItem, "state" | "height">) => {
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current)
-    }
-
-    const ADD_BY: number = 4
-    const defaultHeightRatio: number = state === "appearing" ? 0 : 100
-
-    let times = 0
-
-    setGhost((prevState) => ({
-      ...prevState,
-      state,
-      height,
-      heightRatio: defaultHeightRatio
-    }))
-
-    const interval = setInterval(() => {
-      setGhost((prevState) => ({
-        ...prevState,
-        heightRatio: prevState.heightRatio + (state === "appearing" ? ADD_BY : -ADD_BY)
-      }))
-
-      times += ADD_BY
-
-      if (times >= 100) {
-        if (state === "disappearing") {
-          return forceGhostRemoval()
-        }
-
-        clearInterval(interval)
-        intervalRef.current = null
-      }
-    }, ghost.delay)
-
-    intervalRef.current = interval
-  }
-
   const mouseDownHandler = (e: MouseEvent<HTMLSpanElement>) => {
     const itemEl = itemRef.current
 
@@ -115,7 +57,7 @@ export function Item({ item, columnId }: PropsType) {
 
     const { width, height, left, top } = itemEl.getBoundingClientRect()
 
-    toggleGhost({ state: "disappearing", height })
+    prev.toggle({ state: "disappearing", height })
 
     setDrag({
       columnId,
@@ -158,16 +100,26 @@ export function Item({ item, columnId }: PropsType) {
       document.onmouseup = null
 
       setDrag({ columnId: "", itemId: "", isDragging: false })
-      forceGhostRemoval()
     }
   }
 
-  const mouseEnterHandler = () => {
-    if (!drag.isDragging || !itemRef.current || intervalRef.current) return
+  const mouseOverHandler = (e: MouseEvent<HTMLDivElement>) => {
+    if (!drag.isDragging || !itemRef.current) return
 
-    const { height } = itemRef.current.getBoundingClientRect()
+    const { height, top } = itemRef.current.getBoundingClientRect()
+    const position = height / 2 >= e.clientY - top ? "top" : "bottom"
 
-    toggleGhost({ state: "appearing", height })
+    if (dragPosition.current === position) return
+
+    dragPosition.current = position
+
+    if (position === "top") {
+      prev.toggle({ state: "appearing", height }, true, true)
+      next.toggle({ state: "disappearing", height: next.ghost.height }, false, true)
+    } else {
+      prev.toggle({ state: "disappearing", height: prev.ghost.height }, false, true)
+      next.toggle({ state: "appearing", height }, true, true)
+    }
   }
 
   const mouseLeaveHandler = () => {
@@ -177,7 +129,10 @@ export function Item({ item, columnId }: PropsType) {
 
     if (!drag.isDragging || draggable) return
 
-    toggleGhost({ state: "disappearing", height: ghost.height })
+    dragPosition.current = null
+
+    prev.toggle({ state: "disappearing", height: prev.ghost.height }, false, true)
+    next.toggle({ state: "disappearing", height: next.ghost.height }, false, true)
   }
 
   const dropHandler = () => {
@@ -192,32 +147,28 @@ export function Item({ item, columnId }: PropsType) {
       item: drag.itemId
     }))
 
-    columnsDispatch(addItemBefore({
+    columnsDispatch(addItemAt({
       column: columnId,
-      beforeItem: item.id,
-      item: drag.itemId
+      refItem: item.id,
+      item: drag.itemId,
+      isBefore: dragPosition.current === "top"
     }))
 
-    forceGhostRemoval()
+    prev.forceRemoval()
+    next.forceRemoval()
   }
 
   return (
     <div
       className="item-wrapper"
       onMouseLeave={mouseLeaveHandler}
-      onMouseEnter={mouseEnterHandler}
       onMouseUp={dropHandler}
     >
-      {ghost.state !== "none" && (
-        <span
-          className="ghost-item"
-          aria-hidden={true}
-          style={{ height: `${ghost.height * ghost.heightRatio / 100}px` }}>
-        </span>
-      )}
+      {prev.ghostItem}
       <div
         className="item"
         ref={itemRef}
+        onMouseOver={mouseOverHandler}
         style={{ backgroundColor: item.color }}
       >
         <div className="item__header">
@@ -248,6 +199,7 @@ export function Item({ item, columnId }: PropsType) {
           <AddTag itemId={item.id} />
         </div>
       </div>
+      {next.ghostItem}
     </div>
   )
 }

@@ -17,6 +17,7 @@ export type ItemAction =
   | { type: "ADD_TAG", tag: AddTag }
   | { type: "EDIT_TAG", tag: EditTag }
   | { type: "REMOVE_TAG", tag: RemoveTag }
+  | { type: "CLEAR_ITEMS" }
 
 export function addItem(item: AddItem): ItemAction {
   return { type: "ADD_ITEM", item }
@@ -44,4 +45,8 @@ export function editTag(tag: EditTag): ItemAction {
 
 export function removeTag(tag: RemoveTag): ItemAction {
   return { type: "REMOVE_TAG", tag }
+}
+
+export function clearItems(): ItemAction {
+  return { type: "CLEAR_ITEMS" }
 }

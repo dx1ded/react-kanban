@@ -1,10 +1,25 @@
-import { useContext, useReducer } from "react"
+import { useContext } from "react"
+import { useReducerWithAfterware } from "./useReducerWithAfterware"
 import { columnsReducer, StateType } from "../reducers/columns/reducer"
+import { LocalStorageAfterware } from "../reducers/localStorage.afterware"
 import { KanbanContext } from "../context/kanbanContext"
-import { addColumn, editColumnName, removeColumn, addItem, addItemAt, removeItem } from "../reducers/columns/actions"
+import {
+  addColumn,
+  editColumnName,
+  removeColumn,
+  addItem,
+  addItemAt,
+  removeItem,
+  clearColumns
+} from "../reducers/columns/actions"
+import { LOCALSTORAGE_COLUMNS } from "../utils"
 
 export function useColumnsContext(initialState: StateType = []) {
-  const [state, dispatch] = useReducer(columnsReducer, initialState)
+  const [state, dispatch] = useReducerWithAfterware(
+    columnsReducer,
+    initialState,
+    LocalStorageAfterware(LOCALSTORAGE_COLUMNS)
+  )
 
   return { state, dispatch }
 }
@@ -20,6 +35,7 @@ export function useColumns() {
     removeColumn,
     addItem,
     addItemAt,
-    removeItem
+    removeItem,
+    clearColumns
   }
 }

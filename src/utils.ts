@@ -7,3 +7,5 @@ export function* generateColors(): Generator<string> {
 }
 
 export const HIDDEN_CLASSNAME = "visually-hidden"
+export const LOCALSTORAGE_COLUMNS = "columns"
+export const LOCALSTORAGE_ITEMS = "items"

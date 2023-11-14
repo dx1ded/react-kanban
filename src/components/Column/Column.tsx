@@ -1,4 +1,4 @@
-import { ChangeEvent } from "react"
+import ContentEditable, { ContentEditableEvent } from "react-contenteditable"
 import { ColumnType } from "../../reducers/columns/reducer"
 import { useColumns } from "../../hooks/useColumns"
 import { useItems } from "../../hooks/useItems"
@@ -21,12 +21,10 @@ export function Column({ column }: PropsType) {
     ))
   }
 
-  const changeHandler = (e: ChangeEvent<HTMLDivElement>) => {
-    const value = e.target.textContent || ""
-
+  const changeHandler = (e: ContentEditableEvent) => {
     dispatch(editColumnName({
       id: column.id,
-      name: value
+      name: e.target.value
     }))
   }
 
@@ -37,12 +35,12 @@ export function Column({ column }: PropsType) {
           className="material-symbols-outlined column__delete"
           onClick={deleteColumn}
         >delete</span>
-        <h2
+        <ContentEditable
+          tagName="h2"
           className="column__name"
-          contentEditable={true}
-          suppressContentEditableWarning={true}
-          onInput={changeHandler}>
-          {column.name}</h2>
+          html={column.name}
+          onChange={changeHandler}
+        />
       </div>
       <div className="column__items">
         {column.items.map((id) => (

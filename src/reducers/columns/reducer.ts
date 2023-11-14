@@ -43,6 +43,8 @@ export const columnsReducer = (state = initialState, action: ColumnAction): Stat
         ? { ...column, items: column.items.filter((id) => id !== action.ids.item) }
         : column
       )
+    case "CLEAR_COLUMNS":
+      return []
     default: return state
   }
 }

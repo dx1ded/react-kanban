@@ -1,4 +1,4 @@
-import { ChangeEvent } from "react"
+import ContentEditable, { ContentEditableEvent } from "react-contenteditable"
 import { useItems } from "../../hooks/useItems"
 import "./Tag.scss"
 
@@ -11,13 +11,11 @@ interface PropsType {
 export function Tag({ itemId, tag, index }: PropsType) {
   const { dispatch, editTag, removeTag } = useItems()
 
-  const changeTag = (e: ChangeEvent<HTMLSpanElement>, index: number) => {
-    const value = e.target.textContent || ""
-
+  const changeTag = (e: ContentEditableEvent, index: number) => {
     dispatch(editTag({
       itemId,
       index,
-      name: value
+      name: e.target.value
     }))
   }
 
@@ -35,12 +33,12 @@ export function Tag({ itemId, tag, index }: PropsType) {
         aria-label="Remove tag"
         onClick={() => deleteTag(index)}
       >+</span>
-      <span
+      <ContentEditable
+        tagName="span"
         className="item__tag-name"
-        contentEditable={true}
-        suppressContentEditableWarning={true}
-        onInput={(e: ChangeEvent<HTMLSpanElement>) => changeTag(e, index)}
-      >{tag}</span>
+        html={tag}
+        onChange={(e) => changeTag(e, index)}
+      />
     </div>
   )
 }

@@ -1,5 +1,7 @@
-import { useContext, useReducer } from "react"
+import { useContext } from "react"
+import { useReducerWithAfterware } from "./useReducerWithAfterware"
 import { itemsReducer, StateType } from "../reducers/items/reducer"
+import { LocalStorageAfterware } from "../reducers/localStorage.afterware"
 import { KanbanContext } from "../context/kanbanContext"
 import {
   addItem,
@@ -8,11 +10,17 @@ import {
   removeItems,
   addTag,
   editTag,
-  removeTag
+  removeTag,
+  clearItems
 } from "../reducers/items/actions"
+import { LOCALSTORAGE_ITEMS } from "../utils"
 
 export function useItemsContext(initialState: StateType = []) {
-  const [state, dispatch] = useReducer(itemsReducer, initialState)
+  const [state, dispatch] = useReducerWithAfterware(
+    itemsReducer,
+    initialState,
+    LocalStorageAfterware(LOCALSTORAGE_ITEMS)
+  )
 
   return { state, dispatch }
 }
@@ -29,6 +37,7 @@ export function useItems() {
     removeItems,
     addTag,
     editTag,
-    removeTag
+    removeTag,
+    clearItems
   }
 }

@@ -20,6 +20,7 @@ export type ColumnAction =
   | { type: "ADD_ITEM", ids: ColumnAndItemIds }
   | { type: "ADD_ITEM_AT", ids: AddItemAt }
   | { type: "REMOVE_ITEM", ids: ColumnAndItemIds }
+  | { type: "CLEAR_COLUMNS" }
 
 export function addColumn(column: IdAndName): ColumnAction {
   return { type: "ADD_COLUMN", column }
@@ -43,4 +44,8 @@ export function addItemAt(ids: AddItemAt): ColumnAction {
 
 export function removeItem(ids: ColumnAndItemIds): ColumnAction {
   return { type: "REMOVE_ITEM", ids }
+}
+
+export function clearColumns(): ColumnAction {
+  return { type: "CLEAR_COLUMNS" }
 }

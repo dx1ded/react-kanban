@@ -1,4 +1,5 @@
-import { useRef, ChangeEvent, MouseEvent } from "react"
+import { useRef, MouseEvent } from "react"
+import ContentEditable, { ContentEditableEvent } from "react-contenteditable"
 import { ColumnType } from "../../reducers/columns/reducer"
 import { ItemType } from "../../reducers/items/reducer"
 import { useColumns } from "../../hooks/useColumns"
@@ -32,21 +33,17 @@ export function Item({ item, columnId }: PropsType) {
     }))
   }
 
-  const changeTitle = (e: ChangeEvent<HTMLHeadingElement>) => {
-    const value = e.target.textContent || ""
-
+  const changeTitle = (e: ContentEditableEvent) => {
     dispatch(editItemTitle({
       id: item.id,
-      title: value
+      title: e.target.value
     }))
   }
 
-  const changeDescription = (e: ChangeEvent<HTMLParagraphElement>) => {
-    const value = e.target.textContent || ""
-
+  const changeDescription = (e: ContentEditableEvent) => {
     dispatch(editItemDescription({
       id: item.id,
-      description: value
+      description: e.target.value
     }))
   }
 
@@ -172,12 +169,12 @@ export function Item({ item, columnId }: PropsType) {
         style={{ backgroundColor: item.color }}
       >
         <div className="item__header">
-          <h4
+          <ContentEditable
+            tagName="h4"
             className="item__title"
-            contentEditable={true}
-            suppressContentEditableWarning={true}
-            onInput={changeTitle}
-          >{item.title}</h4>
+            html={item.title}
+            onChange={changeTitle}
+          />
           <div className="item__actions">
             <span className="material-symbols-outlined" onClick={deleteItem}>delete</span>
             <span
@@ -186,12 +183,12 @@ export function Item({ item, columnId }: PropsType) {
             >drag_handle</span>
           </div>
         </div>
-        <p
+        <ContentEditable
+          tagName="p"
           className="item__description"
-          contentEditable={true}
-          suppressContentEditableWarning={true}
-          onInput={changeDescription}
-        >{item.description}</p>
+          html={item.description}
+          onChange={changeDescription}
+        />
         <div className="item__tags">
           {item.tags.map((tag, index) => (
             <Tag key={index} itemId={item.id} tag={tag} index={index} />

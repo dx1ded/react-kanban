@@ -49,6 +49,8 @@ export const itemsReducer = (state = initialState, action: ItemAction): StateTyp
         ? { ...item, tags: item.tags.filter((_, index) => index !== action.tag.index) }
         : item
       )
+    case "CLEAR_ITEMS":
+      return []
     default: return state
   }
 }
